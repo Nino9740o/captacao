@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Prévia do site</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
+<style>
+:root{--c:#E8542C;--c2:#FF8A3D;--ink:#14161C;--bg:#FAF8F5;--card:#FFFFFF;--muted:#666C78;--line:#E7E2DA;
+--display:"Sora",system-ui,sans-serif;--body:"DM Sans",system-ui,-apple-system,sans-serif}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);line-height:1.5}
+h1,h2,h3{font-family:var(--display);margin:0;letter-spacing:-.02em;text-wrap:balance}
+a{color:inherit}
+.ribbon{background:var(--ink);color:#fff;font-size:12.5px;text-align:center;padding:7px 12px;letter-spacing:.02em}
+.ribbon b{color:var(--c2)}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 18px;max-width:1000px;margin:0 auto}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:800;font-size:17px;min-width:0}
+.brand i{width:36px;height:36px;border-radius:10px;background:linear-gradient(140deg,var(--c),var(--c2));display:grid;place-items:center;color:#fff;font-style:normal;flex:0 0 auto}
+.brand span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:12px;padding:13px 18px;font-weight:700;text-decoration:none;font-size:15px;border:1px solid transparent}
+.btn svg{width:18px;height:18px}
+.btn.wa{background:#25D366;color:#06301A}
+.btn.main{background:var(--c);color:#fff}
+.btn.out{border-color:var(--line);background:#fff}
+.hero{position:relative;overflow:hidden;background:linear-gradient(160deg,var(--ink),#262A35);color:#fff}
+.hero::before{content:"";position:absolute;width:520px;height:520px;right:-180px;top:-200px;border-radius:50%;background:radial-gradient(circle,var(--c) 0%,transparent 65%);opacity:.55}
+.hero .in{position:relative;max-width:1000px;margin:0 auto;padding:54px 18px 48px}
+.tag{display:inline-block;font-size:12.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--c2);margin-bottom:12px}
+.hero h1{font-size:clamp(30px,8vw,50px);line-height:1.08;max-width:15ch}
+.hero p{color:#C9CDD6;font-size:17px;max-width:44ch;margin:14px 0 22px}
+.ctas{display:flex;flex-wrap:wrap;gap:10px}
+.facts{display:flex;flex-wrap:wrap;gap:18px;margin-top:28px;font-size:14px;color:#C9CDD6}
+.facts b{display:block;color:#fff;font-family:var(--display);font-size:15px}
+section{max-width:1000px;margin:0 auto;padding:44px 18px 8px}
+section h2{font-size:26px;margin-bottom:6px}
+.lead{color:var(--muted);margin:0 0 20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.svc{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px}
+.svc .ic{width:42px;height:42px;border-radius:12px;background:color-mix(in srgb,var(--c) 14%,#fff);color:var(--c);display:grid;place-items:center;margin-bottom:12px;font-family:var(--display);font-weight:800}
+.svc h3{font-size:16px}
+.svc p{margin:4px 0 0;color:var(--muted);font-size:14px}
+.why{display:grid;gap:10px}
+.why div{display:flex;gap:12px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.why svg{width:22px;height:22px;color:var(--c);flex:0 0 auto;margin-top:2px}
+.reviews{background:var(--card);border:2px dashed var(--line);border-radius:16px;padding:22px;color:var(--muted);text-align:center}
+.reviews b{color:var(--ink)}
+.loc{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;display:grid;gap:12px}
+.loc .ad{font-size:16px;font-weight:500}
+footer{max-width:1000px;margin:40px auto 0;padding:24px 18px 120px;color:var(--muted);font-size:13px;border-top:1px solid var(--line)}
+.agency{position:fixed;left:12px;right:12px;bottom:12px;max-width:560px;margin:0 auto;background:var(--ink);color:#fff;border-radius:16px;padding:12px 12px 12px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 14px 34px -10px rgba(0,0,0,.5);z-index:10}
+.agency p{margin:0;font-size:13.5px;flex:1;line-height:1.35}
+.agency p b{display:block;font-size:14.5px}
+.agency .btn{padding:10px 14px;font-size:14px;flex:0 0 auto}
+.err{max-width:520px;margin:80px auto;padding:20px;text-align:center}
+@media (min-width:720px){.why{grid-template-columns:repeat(3,1fr)}.why div{flex-direction:column}}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+const CATS=[
+ {k:"beleza",re:/barb|sal[aã]o|cabel|est[eé]tica|manicure|unha|sobrancelha|beleza|spa|maquiag/i,c:"#B8865B",c2:"#E2B887",tag:"Beleza e estilo",h:"Estilo e cuidado que você sente na hora",p:"Atendimento caprichado, ambiente confortável e horário marcado pelo WhatsApp.",cta:"Agendar horário",s:[["Cortes","Do clássico ao moderno, do jeito que você gosta."],["Barba e acabamento","Navalha, toalha quente e capricho em cada detalhe."],["Tratamentos","Cuidados para cabelo e pele com produtos de qualidade."],["Pacotes","Combos com preço especial para você e sua turma."]]},
+ {k:"auto",re:/oficina|mec[aâ]n|auto|lava|funilaria|pneu|moto|ret[ií]fica|borrach|carro/i,c:"#E8542C",c2:"#FF8A3D",tag:"Serviço automotivo",h:"Seu veículo em boas mãos",p:"Diagnóstico honesto, orçamento antes de começar e serviço entregue no prazo.",cta:"Pedir orçamento",s:[["Revisão completa","Check-up para rodar com segurança e sem surpresa."],["Mecânica geral","Motor, suspensão, freios e embreagem."],["Elétrica","Bateria, alternador, injeção e iluminação."],["Diagnóstico","Encontramos o problema antes de trocar peça."]]},
+ {k:"comida",re:/restaurante|pizz|hamb|lanch|marmit|padaria|a[cç]a[ií]|doce|confeit|churras|bar\b|cafeteria|caf[eé]|sorvet|pastel|food|esfih|sushi|japon/i,c:"#D9412B",c2:"#F5A623",tag:"Comida boa",h:"Sabor que faz você voltar",p:"Peça pelo WhatsApp e receba quentinho, ou venha conhecer a casa.",cta:"Fazer pedido",s:[["Cardápio","Pratos feitos com ingredientes frescos todos os dias."],["Delivery","Entrega rápida na sua região."],["Retirada","Peça antes e retire sem fila."],["Encomendas","Para festas, eventos e reuniões."]]},
+ {k:"saude",re:/dent|odonto|cl[ií]nica|fisio|academia|nutri|psic|m[eé]dic|pilates|crossfit|fono|lab/i,c:"#1E8E8A",c2:"#43C6AC",tag:"Saúde e bem-estar",h:"Cuidado de verdade com você",p:"Profissionais preparados e atendimento humano, com agendamento fácil.",cta:"Agendar avaliação",s:[["Avaliação","Entendemos sua necessidade antes de tudo."],["Atendimento","Acompanhamento próximo em cada etapa."],["Planos","Opções que cabem na sua rotina."],["Agendamento","Marque pelo WhatsApp em poucos minutos."]]},
+ {k:"servicos",re:/eletric|encan|pedreir|pintor|marido|vidra|serralh|refriger|ar.condicionado|chaveir|dedetiz|reform|marcen|gesso|jardin|limpeza|montador/i,c:"#2F6FEB",c2:"#5AA0FF",tag:"Serviços",h:"Serviço bem feito, no prazo combinado",p:"Orçamento sem compromisso e atendimento rápido na sua região.",cta:"Pedir orçamento",s:[["Orçamento grátis","Você sabe o valor antes de começar."],["Atendimento rápido","Agenda organizada para chegar quando você precisa."],["Garantia","Serviço feito com cuidado e responsabilidade."],["Emergências","Fale com a gente pelo WhatsApp."]]},
+ {k:"pet",re:/pet|veterin|banho e tosa|ra[cç][aã]o/i,c:"#8A5CF6",c2:"#C29BFF",tag:"Mundo pet",h:"Carinho e cuidado para quem você ama",p:"Seu pet bem tratado do começo ao fim, com hora marcada.",cta:"Agendar",s:[["Banho e tosa","Higiene completa com produtos próprios para pets."],["Produtos","Rações, acessórios e petiscos."],["Atendimento","Equipe que ama bicho de verdade."],["Leva e traz","Consulte disponibilidade na sua região."]]},
+ {k:"prof",re:/advog|contab|imobili|seguro|despach|consult|arquitet|engenh/i,c:"#1F3A5F",c2:"#4F7CAC",tag:"Atendimento profissional",h:"Atendimento sério, próximo e sem enrolação",p:"Fale direto com quem resolve e tenha clareza em cada etapa.",cta:"Falar com especialista",s:[["Primeira conversa","Entendemos seu caso antes de qualquer proposta."],["Acompanhamento","Você sabe o andamento sem precisar correr atrás."],["Transparência","Valores e prazos combinados desde o início."],["Atendimento online","Resolva muita coisa pelo WhatsApp."]]},
+ {k:"loja",re:/.*/,c:"#E8542C",c2:"#FF8A3D",tag:"Comércio local",h:"Qualidade e atendimento que fazem a diferença",p:"Conheça nossos produtos e fale com a gente direto pelo WhatsApp.",cta:"Falar no WhatsApp",s:[["Produtos","Variedade e qualidade para o seu dia a dia."],["Atendimento","Gente que entende e te ajuda a escolher."],["Entrega","Consulte entrega na sua região."],["Condições","Formas de pagamento facilitadas."]]}
+];
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const waNum=f=>{let d=String(f||"").replace(/\D/g,"");if(!d)return "";if(d.startsWith("0"))d=d.slice(1);if(!d.startsWith("55")&&(d.length===10||d.length===11))d="55"+d;return d};
+const cap=s=>String(s||"").replace(/(^|\s)\S/g,m=>m.toUpperCase());
+const IC={wa:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm4.5 12.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.7a2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3z"/></svg>',
+pin:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>',
+ok:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg>'};
+function ler(){
+  try{
+    let h=location.hash.slice(1);if(!h)return null;
+    h=h.replace(/-/g,"+").replace(/_/g,"/");while(h.length%4)h+="=";
+    return JSON.parse(decodeURIComponent(escape(atob(h))));
+  }catch(e){return null}
+}
+const d=ler(),root=document.getElementById("root");
+if(!d||!d.n){
+  root.innerHTML='<div class="err"><h2>Prévia não encontrada</h2><p>Confira se o link foi copiado inteiro.</p></div>';
+}else{
+  const cat=CATS.find(c=>c.re.test(d.ni||""))||CATS[CATS.length-1];
+  document.documentElement.style.setProperty("--c",cat.c);document.documentElement.style.setProperty("--c2",cat.c2);
+  document.title=d.n+" · Prévia do site";
+  const wa=waNum(d.f),maps="https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(d.n+" "+(d.e||d.c||""));
+  const ini=String(d.n).trim()[0].toUpperCase();
+  const msg=encodeURIComponent("Olá! Vi o site da "+d.n+" e gostaria de mais informações.");
+  const ag=waNum(d.a),agMsg=encodeURIComponent("Oi Angelo! Vi a prévia do site da "+d.n+" e quero saber mais.");
+  root.innerHTML=`
+  <div class="ribbon">Prévia criada para <b>${esc(d.n)}</b> · modelo de demonstração</div>
+  <header><div class="brand"><i>${esc(ini)}</i><span>${esc(d.n)}</span></div>${wa?`<a class="btn wa" href="https://wa.me/${wa}?text=${msg}">${IC.wa} WhatsApp</a>`:""}</header>
+  <div class="hero"><div class="in">
+    <span class="tag">${esc(cat.tag)}${d.c?" · "+esc(d.c):""}</span>
+    <h1>${esc(cat.h)}</h1>
+    <p>${esc(cat.p)}</p>
+    <div class="ctas">${wa?`<a class="btn wa" href="https://wa.me/${wa}?text=${msg}">${IC.wa} ${esc(cat.cta)}</a>`:""}<a class="btn out" style="color:var(--ink)" href="${maps}">${IC.pin} Como chegar</a></div>
+    <div class="facts">${d.ni?`<div><b>${esc(cap(d.ni))}</b>o que fazemos</div>`:""}${d.c?`<div><b>${esc(d.b||d.c)}</b>onde estamos</div>`:""}${wa?`<div><b>WhatsApp</b>resposta rápida</div>`:""}</div>
+  </div></div>
+  <section><h2>O que oferecemos</h2><p class="lead">Os principais serviços da ${esc(d.n)}.</p>
+    <div class="grid">${cat.s.map((s,i)=>`<div class="svc"><div class="ic">${i+1}</div><h3>${esc(s[0])}</h3><p>${esc(s[1])}</p></div>`).join("")}</div></section>
+  <section><h2>Por que escolher a gente</h2><p class="lead">O que faz a diferença no dia a dia.</p>
+    <div class="why"><div>${IC.ok}<span><b>Atendimento pelo WhatsApp.</b> Tire dúvidas e marque sem sair de casa.</span></div><div>${IC.ok}<span><b>Perto de você.</b> ${d.c?"Atendemos "+esc(d.b?d.b+", ":"")+esc(d.c)+" e região.":"Fácil de chegar."}</span></div><div>${IC.ok}<span><b>Compromisso.</b> Fazemos o combinado, do jeito combinado.</span></div></div></section>
+  <section><h2>O que os clientes dizem</h2><p class="lead">No site final, aqui entram as avaliações reais do Google.</p>
+    <div class="reviews"><b>Espaço para as avaliações dos seus clientes</b><br>Mostrar a opinião de quem já é cliente aumenta a confiança de quem está conhecendo vocês.</div></section>
+  <section><h2>Onde estamos</h2><div class="loc">${d.e?`<div class="ad">${esc(d.e)}</div>`:""}<div class="ctas"><a class="btn main" href="${maps}">${IC.pin} Abrir no mapa</a>${wa?`<a class="btn wa" href="https://wa.me/${wa}?text=${msg}">${IC.wa} Chamar no WhatsApp</a>`:""}</div></div></section>
+  <footer>© ${new Date().getFullYear()} ${esc(d.n)}. Esta página é uma prévia de demonstração criada pela Localy Ai.</footer>
+  ${ag?`<div class="agency"><p><b>Gostou do seu site?</b>Fale com o Angelo, da Localy Ai, e coloque no ar.</p><a class="btn wa" href="https://wa.me/${ag}?text=${agMsg}">${IC.wa} Quero</a></div>`:""}`;
+}
+</script>
+</body>
+</html>

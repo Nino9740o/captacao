@@ -185,6 +185,27 @@ details.more summary{font-size:13px;color:var(--muted);cursor:pointer;font-weigh
 
 .toast{position:fixed;left:50%;bottom:calc(150px + var(--safe-b));transform:translateX(-50%) translateY(8px);background:var(--text);color:var(--bg);padding:10px 16px;border-radius:12px;font-size:14px;font-weight:700;opacity:0;transition:.2s;pointer-events:none;z-index:40;max-width:90%;text-align:center}
 .toast.on{opacity:1;transform:translateX(-50%)}
+.week{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;align-items:end;height:110px;margin-top:6px}
+.week div{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;height:100%;font-size:11px;color:var(--muted)}
+.week i{width:100%;max-width:26px;border-radius:6px 6px 3px 3px;background:linear-gradient(180deg,var(--primary2),var(--primary));min-height:3px}
+.week div.hj i{background:var(--teal)}
+.week b{font-size:11.5px;color:var(--text);font-variant-numeric:tabular-nums}
+.wk-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:12px;padding-top:12px;border-top:1px solid var(--line);text-align:center}
+.wk-stats b{display:block;font-family:var(--display);font-size:18px;font-variant-numeric:tabular-nums}
+.wk-stats span{font-size:11px;color:var(--muted)}
+.ntab{width:100%;border-collapse:collapse;font-size:13px;margin-top:6px}
+.ntab th{color:var(--muted);font-weight:500;text-align:right;padding:6px 4px;font-size:12px}
+.ntab th:first-child,.ntab td:first-child{text-align:left}
+.ntab td{padding:7px 4px;border-top:1px solid var(--line);text-align:right;font-variant-numeric:tabular-nums}
+.ntab td b{color:var(--teal)}
+#mapaBox{margin-bottom:12px}
+#mapa{height:62vh;min-height:340px;border-radius:16px;border:1px solid var(--line);overflow:hidden;background:var(--surface)}
+.leaflet-popup-content-wrapper,.leaflet-popup-tip{background:#121B30!important;color:var(--text)!important;border:1px solid var(--line)}
+.leaflet-popup-content{margin:12px 14px!important;font-family:var(--body);font-size:13px;line-height:1.4}
+.leaflet-popup-content b{font-family:var(--display);font-size:14px}
+.leaflet-popup-content .btn{min-height:34px;padding:6px 10px;font-size:13px;margin-top:8px}
+.leaflet-container a.leaflet-popup-close-button{color:var(--muted)}
+.leaflet-control-attribution{font-size:9px!important}
 @media (prefers-reduced-motion:reduce){.screen,.sheet,.toast,.backdrop{animation:none;transition:none}.spin{animation-duration:3s}}
 @media (max-width:360px){.checks{grid-template-columns:1fr}.stat b{font-size:19px}}
 </style>
@@ -219,6 +240,9 @@ details.more summary{font-size:13px;color:var(--muted);cursor:pointer;font-weigh
 
     <div class="sec"><h3>Seu funil</h3></div>
     <div class="card" id="funilResumo"></div>
+
+    <div class="sec"><h3>Sua semana</h3></div>
+    <div class="card" id="relatorio"></div>
   </section>
 
   <!-- BUSCAR -->
@@ -244,6 +268,8 @@ details.more summary{font-size:13px;color:var(--muted);cursor:pointer;font-weigh
       <div id="buscaStatus"></div>
     </div>
     <div id="resultados"></div>
+    <div id="mapaBox" hidden><div id="mapa"></div></div>
+    <div id="resPe"></div>
   </section>
 
   <!-- FUNIL -->
@@ -263,10 +289,17 @@ details.more summary{font-size:13px;color:var(--muted);cursor:pointer;font-weigh
         <div><label class="lb" for="cPreco">Preço do site (R$)</label><input class="inp" type="text" id="cPreco" inputmode="decimal"></div>
         <div><label class="lb" for="cMeta">Meta por dia</label><input class="inp" type="number" id="cMeta" min="1" max="200" inputmode="numeric"></div>
       </div>
+      <label class="lb" for="cFone">Seu WhatsApp (aparece na prévia do site)</label>
+      <input class="inp" type="tel" id="cFone" placeholder="(19) 99999-9999">
       <label class="lb" for="cKey">Chave da API do TomTom</label>
       <input class="inp" type="text" id="cKey" placeholder="Cole aqui a sua chave" autocomplete="off" spellcheck="false">
       <p class="sub" style="font-size:13px">Pegue em developer.tomtom.com → Dashboard → Keys. Fica salva só neste celular.</p>
       <div class="btns"><button class="btn primary" id="btnCfg" type="button">Salvar ajustes</button></div>
+    </div>
+    <div class="card">
+      <h3>Avisos de cobrança</h3>
+      <p class="sub" id="avisoTxt">Receba um aviso no celular quando tiver leads para cobrar no dia.</p>
+      <div class="btns"><button class="btn" id="btnAvisos" type="button">Ativar avisos</button></div>
     </div>
     <div class="card">
       <h3>Backup dos leads</h3>
@@ -337,10 +370,13 @@ const TPL={
   preco:{t:"Quando perguntam o preço",b:"Boa pergunta. O site sai a partir de R$ {preco}.\n\nPra comparar: se ele trouxer um cliente a mais por mês, já se pagou. Hoje, cada pessoa que procura {nicho} em {cidade} e não acha vocês vai pro concorrente.\n\nA prévia da {nome} já está pronta. Você seria contra dar uma olhada antes de decidir qualquer coisa?"},
   objecaoInsta:{t:"Objeção · \"já tenho Instagram\"",b:"Faz todo sentido, o Instagram é ótimo pra quem já te segue.\n\nO site é pra quem ainda não te conhece e está pesquisando {nicho} no Google agora. São clientes diferentes.\n\nSeria ruim ter os dois trabalhando pra {nome}?"},
   objecaoPensar:{t:"Objeção · \"vou pensar\"",b:"Claro, sem pressa nenhuma.\n\nSó pra eu entender: o que precisaria acontecer pra isso fazer sentido pra {nome}? Assim eu não te mando nada que não sirva."},
+  previa:{t:"Enviar a prévia",b:"Prontinho! Aqui está a prévia do site da {nome} 👇\n{link}\n\nDá uma olhada com calma. Se quiser mudar cor, foto ou texto, é só me falar que eu ajusto."},
   fechar:{t:"Fechamento",b:"Fechado! Vai ser um prazer colocar a {nome} no ar 🚀\n\nPra eu começar hoje, me manda:\n• Logo (se tiver)\n• 5 a 10 fotos do seu trabalho\n• Horário de funcionamento\n• Endereço\n\nAssim que chegar, eu te mostro a primeira versão."}
 };
 const AV=["#FF9A6B","#FFC861","#59D9BD","#7FB2FF","#C79BFF","#FF8FB1","#9BE07A"];
 const IC={
+  cal:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg>',
+  eye:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>',
   wa:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.7a2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3z"/></svg>',
   plus:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
   map:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>',
@@ -364,7 +400,19 @@ const corAv=n=>{let h=0;for(const c of String(n))h=(h*31+c.charCodeAt(0))>>>0;re
 function score(l){return (l.sinais||[]).reduce((a,k)=>a+((SINAIS.find(s=>s.k===k)||{}).p||0),0)}
 function temp(l){const s=score(l);return s>=3?"hot":s>=2?"warm":"cold"}
 function waNum(f){let d=String(f||"").replace(/\D/g,"");if(!d)return "";if(d.startsWith("0"))d=d.slice(1);if(!d.startsWith("55")&&(d.length===10||d.length===11))d="55"+d;return d}
-function preencher(txt,l){return txt.replace(/\{nome\}/g,l.nome||"sua empresa").replace(/\{cidade\}/g,l.cidade||"sua cidade").replace(/\{nicho\}/g,l.nicho||"esse serviço").replace(/\{preco\}/g,cfg.preco||"249,90")}
+function preencher(txt,l){let t=txt.replace(/\{nome\}/g,l.nome||"sua empresa").replace(/\{cidade\}/g,l.cidade||"sua cidade").replace(/\{nicho\}/g,l.nicho||"esse serviço").replace(/\{preco\}/g,cfg.preco||"249,90");if(l&&l.nome&&l.nome!=="{nome}")t=t.replace(/\{link\}/g,previaLink(l));return t}
+function b64u(s){return btoa(unescape(encodeURIComponent(s))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"")}
+function previaLink(l){
+  const d={n:l.nome,ni:l.nicho||"",c:l.cidade||"",f:l.fone||"",e:l.endereco||"",b:l.bairro||"",a:cfg.meuFone||""};
+  Object.keys(d).forEach(k=>{if(!d[k])delete d[k]});
+  return new URL("p.html",location.href).href.split("#")[0]+"#"+b64u(JSON.stringify(d));
+}
+function calLink(l){
+  const d=(l.followup||hoje()).replace(/-/g,""),dt=new Date((l.followup||hoje())+"T12:00:00");dt.setDate(dt.getDate()+1);
+  const d2=dstr(dt).replace(/-/g,"");
+  const wa=waLink(l);
+  return "https://calendar.google.com/calendar/render?action=TEMPLATE&text="+encodeURIComponent("Cobrar "+l.nome+" (Captação)")+"&dates="+d+"/"+d2+"&details="+encodeURIComponent("Mandar a cobrança pelo WhatsApp."+(wa?"\n"+wa:""));
+}
 function tplPara(l){
   if(l.etapa==="novo")return (l.sinais||[]).includes("semSite")?"semSite":"perfil";
   if(l.etapa==="abordado")return (l.cobrancas||0)>=1?"follow2":"follow1";
@@ -399,7 +447,7 @@ async function salvarCfg(){
   try{localStorage.setItem("captacao_cfg",JSON.stringify(cfg))}catch(e){}
   render();
 }
-function salvarLocal(){try{localStorage.setItem("captacao_leads",JSON.stringify(leads));setSync("Salvo neste celular · "+leads.length+" leads","ok")}catch(e){setSync("Não consegui salvar no celular","warn")}}
+function salvarLocal(){espelharParaSW();try{localStorage.setItem("captacao_leads",JSON.stringify(leads));setSync("Salvo neste celular · "+leads.length+" leads","ok")}catch(e){setSync("Não consegui salvar no celular","warn")}}
 function setSync(t,cls){const s=$("sync");s.className="sync "+(cls||"");s.querySelector("span").textContent=t}
 function modoLocal(msg){
   if(mode==="local")return;mode="local";
@@ -445,6 +493,7 @@ function mover(id,etapa){
   const n={...l,etapa};
   if(etapa==="abordado"&&!n.abordadoEm){n.abordadoEm=hoje();n.followup=somaDias(2)}
   if(etapa==="fechado"&&!n.fechadoEm)n.fechadoEm=hoje();
+  if(["respondeu","proposta","fechado"].includes(etapa)&&!n.respondeuEm)n.respondeuEm=hoje();
   if(etapa!=="abordado")n.followup="";
   salvar(n);toast("Movido para "+STAGES.find(s=>s.k===etapa).t);
 }
@@ -507,7 +556,9 @@ function converter(f){
   return {id:f.id||"",nome:String(nome),fone:String(poi.phone||""),site:String(poi.url||""),
     endereco:ad.freeformAddress||[ad.streetName,ad.streetNumber].filter(Boolean).join(", "),
     bairro:ad.neighbourhood||ad.municipalitySubdivision||"",municipio:ad.municipality||"",
-    distancia:typeof pr.distance==="number"?pr.distance:(typeof pr.dist==="number"?pr.dist:null)};
+    distancia:typeof pr.distance==="number"?pr.distance:(typeof pr.dist==="number"?pr.dist:null),
+    lat:(f.position&&f.position.lat)??(f.geometry&&f.geometry.coordinates&&f.geometry.coordinates[1])??null,
+    lon:(f.position&&f.position.lon)??(f.geometry&&f.geometry.coordinates&&f.geometry.coordinates[0])??null};
 }
 function msgErro(e){
   const c=(e&&e.code)||"";
@@ -568,15 +619,59 @@ function renderBusca(){
       <button type="button" data-fb="celular" class="${filtroBusca==="celular"?"on":""}">Com celular</button>
       <button type="button" data-fb="todos" class="${filtroBusca==="todos"?"on":""}">Todas</button>
     </div>
+    <div class="seg" style="grid-template-columns:1fr 1fr">
+      <button type="button" data-vista="lista" class="${vistaBusca==="lista"?"on":""}">Lista</button>
+      <button type="button" data-vista="mapa" class="${vistaBusca==="mapa"?"on":""}">Mapa</button>
+    </div>
     ${novosSem?`<button class="btn primary full" type="button" data-addall="1" style="margin-bottom:12px">${IC.plus} Pôr os ${novosSem} sem site no funil</button>`:""}
-    ${vis.length?vis.map(cardRes).join(""):`<div class="empty">${I.length?"Nenhuma empresa neste filtro. Toque em <b>Todas</b> ou tente outro bairro ou nicho.":"Nenhuma empresa encontrada. Tente outro nicho ou escreva a cidade com o estado."}</div>`}
-    ${busca.mais?`<button class="btn full" type="button" data-mais="1" ${car?"disabled":""}>${car?"Carregando…":"Carregar mais empresas"}</button>`:""}
-    <p class="src">Dados das empresas: TomTom. Confira nota e fotos no Google antes de abordar.</p>`;
+    ${vistaBusca==="mapa"?"":(vis.length?vis.map(cardRes).join(""):`<div class="empty">${I.length?"Nenhuma empresa neste filtro. Toque em <b>Todas</b> ou tente outro bairro ou nicho.":"Nenhuma empresa encontrada. Tente outro nicho ou escreva a cidade com o estado."}</div>`)}`;
+  $("resPe").innerHTML=`${busca.mais?`<button class="btn full" type="button" data-mais="1" ${car?"disabled":""}>${car?"Carregando…":"Carregar mais empresas"}</button>`:""}
+    <p class="src">Dados das empresas e mapa: TomTom. Confira nota e fotos no Google antes de abordar.</p>`;
+  $("mapaBox").hidden=vistaBusca!=="mapa";
+  if(vistaBusca==="mapa")atualizarMapa(vis);
+}
+/* ---------- mapa ---------- */
+let vistaBusca="lista",mapa=null,camada=null,mapaBuscaId=null,leafletP=null;
+function carregarLeaflet(){
+  if(window.L)return Promise.resolve();
+  if(leafletP)return leafletP;
+  leafletP=new Promise((ok,erro)=>{
+    const css=document.createElement("link");css.rel="stylesheet";css.href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css";document.head.appendChild(css);
+    const s=document.createElement("script");s.src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js";s.onload=ok;s.onerror=()=>{leafletP=null;erro()};document.head.appendChild(s);
+  });
+  return leafletP;
+}
+async function atualizarMapa(vis){
+  try{await carregarLeaflet()}catch(e){$("mapa").innerHTML='<div class="empty" style="margin:12px">Não consegui carregar o mapa. Confira a internet.</div>';return}
+  if(!mapa){
+    mapa=L.map("mapa",{zoomControl:true,attributionControl:true});
+    const key=encodeURIComponent((cfg.tomtomKey||"").trim());
+    const tt=L.tileLayer("https://api.tomtom.com/map/1/tile/basic/night/{z}/{x}/{y}.png?key="+key,{maxZoom:19,attribution:"© TomTom"});
+    let trocou=false;
+    tt.on("tileerror",()=>{if(trocou)return;trocou=true;mapa.removeLayer(tt);L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:"© OpenStreetMap"}).addTo(mapa)});
+    tt.addTo(mapa);
+    camada=L.layerGroup().addTo(mapa);
+  }
+  setTimeout(()=>mapa.invalidateSize(),60);
+  camada.clearLayers();
+  const pts=[];
+  for(const it of vis){
+    if(typeof it.lat!=="number"||typeof it.lon!=="number")continue;
+    const idx=busca.itens.indexOf(it),ss=semSite(it),l=leadDe(it);
+    const mk=L.circleMarker([it.lat,it.lon],{radius:ss?9:7,weight:2,color:"#0A0F1C",fillColor:l?"#8F9BBA":(ss?"#FF6A3D":"#1FC7A6"),fillOpacity:.95});
+    const [stTxt]=SITE_TXT[tipoSite(it.site)];
+    mk.bindPopup(`<b>${esc(it.nome)}</b><br>${esc(stTxt)}${it.fone?" · "+esc(it.fone):""}<br><span style="color:var(--muted)">${esc(it.endereco)}</span><br>${l?`<span class="btn ghost" aria-disabled="true">${IC.check} No funil</span>`:`<button class="btn primary" type="button" data-addres="${idx}">${IC.plus} Funil</button>`} <a class="btn ghost" href="${esc(linkGoogle(it))}" target="_blank" rel="noopener">${IC.map} Google</a>`);
+    mk.addTo(camada);pts.push([it.lat,it.lon]);
+  }
+  if(busca.pos)L.circleMarker([busca.pos.lat,busca.pos.lon],{radius:5,color:"#fff",weight:2,fillColor:"#fff",fillOpacity:1}).addTo(camada);
+  const bid=busca.lugar+"|"+busca.nicho+"|"+filtroBusca;
+  if(bid!==mapaBuscaId){mapaBuscaId=bid;if(pts.length)mapa.fitBounds(pts,{padding:[30,30],maxZoom:15});else if(busca.pos)mapa.setView([busca.pos.lat,busca.pos.lon],13)}
 }
 function linkGoogle(it){return "https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(it.nome+" "+(it.endereco||busca.lugar||""))}
 function leadDeRes(it){
   return {id:novoId(),nome:it.nome,nicho:busca.nicho,cidade:it.municipio||busca.pos&&busca.pos.municipio||busca.cidade,fone:it.fone,maps:linkGoogle(it),
     sinais:semSite(it)?["semSite"]:[],obs:[it.endereco,it.site?"Site: "+it.site:""].filter(Boolean).join(" · "),
+    endereco:it.endereco||"",bairro:it.bairro||"",
     etapa:"novo",criado:Date.now(),chave:chave(it.nome,it.fone),fonte:"busca"};
 }
 function cardRes(it){
@@ -594,6 +689,7 @@ function cardRes(it){
       ${l?`<span class="btn ghost" aria-disabled="true">${IC.check} No funil · ${esc(STAGES.find(s=>s.k===l.etapa).t)}</span>`
         :`${wa?`<a class="btn wa" href="${esc(wa)}" target="_blank" rel="noopener" data-wares="${idx}">${IC.wa} WhatsApp</a>`:""}<button class="btn ${wa?"":"primary"}" type="button" data-addres="${idx}">${IC.plus} Funil</button>`}
       <a class="btn ghost" href="${esc(linkGoogle(it))}" target="_blank" rel="noopener">${IC.map} Google</a>
+      ${ss?`<a class="btn ghost" href="${esc(previaLink(draft))}" target="_blank" rel="noopener">${IC.eye} Prévia</a>`:""}
       ${url?`<a class="btn ghost" href="${esc(url)}" target="_blank" rel="noopener">Ver site</a>`:""}
     </div>
   </article>`;
@@ -604,6 +700,45 @@ async function adicionarTodos(btn){
   for(const it of lista){await salvar(leadDeRes(it))}
   toast(lista.length+" leads no funil. Agora é abordar!");
   renderBusca();
+}
+
+/* ================= avisos ================= */
+function espelharParaSW(){
+  try{
+    if(!("caches" in window))return;
+    const fu=leads.filter(l=>l.etapa==="abordado"&&(l.cobrancas||0)<2&&l.followup).map(l=>l.followup);
+    caches.open("captacao-dados").then(c=>c.put(new Request("./__cobrancas"),new Response(JSON.stringify(fu),{headers:{"Content-Type":"application/json"}}))).catch(()=>{});
+  }catch(e){}
+}
+function atualizarTxtAvisos(){
+  const t=$("avisoTxt"),b=$("btnAvisos");if(!t)return;
+  if(!("Notification" in window)){t.textContent="Este navegador não permite avisos. Instale o app pelo Chrome para usar.";b.hidden=true;return}
+  if(Notification.permission==="granted"){t.textContent="Avisos ativados. Você recebe um aviso por dia quando tiver lead para cobrar.";b.textContent="Testar aviso";b.hidden=false}
+  else if(Notification.permission==="denied"){t.textContent="Os avisos foram bloqueados. Libere nas configurações do Chrome, em Notificações deste site.";b.hidden=true}
+  else{b.textContent="Ativar avisos";b.hidden=false}
+}
+async function mostrarAviso(n,teste){
+  try{
+    const reg=await navigator.serviceWorker.ready;
+    await reg.showNotification("Captação",{body:teste?"Os avisos estão funcionando.":(n===1?"Você tem 1 lead para cobrar hoje.":`Você tem ${n} leads para cobrar hoje.`),icon:"icon-192.png",badge:"icon-192.png",tag:"cobrar",renotify:false});
+  }catch(e){}
+}
+function avisarCobrancas(n){
+  try{
+    if(!n||!("Notification" in window)||Notification.permission!=="granted")return;
+    const k="captacao_aviso";if(localStorage.getItem(k)===hoje())return;
+    localStorage.setItem(k,hoje());mostrarAviso(n);
+  }catch(e){}
+}
+async function ativarAvisos(){
+  if(!("Notification" in window))return;
+  if(Notification.permission==="granted"){mostrarAviso(0,true);return}
+  const p=await Notification.requestPermission();
+  if(p==="granted"){
+    try{const reg=await navigator.serviceWorker.ready;if(reg.periodicSync)await reg.periodicSync.register("cobrancas",{minInterval:12*60*60*1000})}catch(e){}
+    toast("Avisos ativados");mostrarAviso(0,true);
+  }
+  atualizarTxtAvisos();
 }
 
 /* ================= render ================= */
@@ -636,8 +771,22 @@ function render(){
   $("funilResumo").innerHTML=etapas.map(s=>`<div class="fbar ${s.k==="fechado"?"win":""}"><span>${s.t}</span><div class="tr"><i style="width:${cont(s.k)/mx*100}%"></i></div><b>${cont(s.k)}</b></div>`).join("")
     +`<div class="rate"><div>Respostas <b>${abordTotal?Math.round(resp/abordTotal*100):0}%</b></div><div>Fechamentos <b>${abordTotal?Math.round(fechTot/abordTotal*100):0}%</b></div><div>Perdidos <b>${cont("perdido")}</b></div></div>`;
 
-  // nav badge
+  // relatório da semana
+  const dias=[];for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);dias.push(dstr(d))}
+  const ini7=dias[0],porDia=dias.map(d=>leads.filter(l=>l.abordadoEm===d).length),mxd=Math.max(1,...porDia);
+  const ab7=porDia.reduce((a,b)=>a+b,0),re7=leads.filter(l=>l.respondeuEm&&l.respondeuEm>=ini7).length,fe7=leads.filter(l=>l.fechadoEm&&l.fechadoEm>=ini7);
+  const fat7=fe7.reduce((a,l)=>a+(parseFloat(String(l.valor||"0").replace(/\./g,"").replace(",","."))||0),0);
+  const DS=["dom","seg","ter","qua","qui","sex","sáb"];
+  const nich={};for(const l of leads.filter(l=>l.abordadoEm)){const k=(l.nicho||"outros").toLowerCase();nich[k]=nich[k]||{a:0,r:0,f:0};nich[k].a++;if(["respondeu","proposta","fechado"].includes(l.etapa))nich[k].r++;if(l.etapa==="fechado")nich[k].f++}
+  const nl=Object.entries(nich).sort((a,b)=>b[1].a-a[1].a).slice(0,5);
+  $("relatorio").innerHTML=`<div class="week">${dias.map((d,i)=>`<div class="${d===h?"hj":""}"><b>${porDia[i]||""}</b><i style="height:${porDia[i]/mxd*72}px"></i>${DS[new Date(d+"T12:00:00").getDay()]}</div>`).join("")}</div>
+    <div class="wk-stats"><div><b>${ab7}</b><span>abordagens</span></div><div><b>${re7}</b><span>respostas</span></div><div><b>${fe7.length}</b><span>fechados</span></div><div><b style="color:var(--teal);font-size:${fat7>=1000?14:16}px">${fat7?"R$"+fat7.toLocaleString("pt-BR",{maximumFractionDigits:0}):"–"}</b><span>faturado</span></div></div>
+    ${nl.length?`<table class="ntab"><thead><tr><th>Nicho</th><th>Abord.</th><th>Resp.</th><th>Fech.</th></tr></thead><tbody>${nl.map(([k,v])=>`<tr><td>${esc(k)}</td><td>${v.a}</td><td>${v.r} <span style="color:var(--muted)">(${Math.round(v.r/v.a*100)}%)</span></td><td>${v.f?`<b>${v.f}</b>`:"0"}</td></tr>`).join("")}</tbody></table>`:`<p class="sub" style="margin-top:10px">Quando você começar a abordar, aqui aparece qual nicho responde e fecha mais.</p>`}`;
+
+  // nav badge + avisos
   const dot=$("navDot");dot.hidden=!due.length;dot.textContent=due.length;
+  try{if(navigator.setAppBadge){due.length?navigator.setAppBadge(due.length):navigator.clearAppBadge()}}catch(e){}
+  avisarCobrancas(due.length);
 
   // nichos
   $("nichos").innerHTML=NICHOS.map(n=>`<button type="button" class="chip ${n===nichoSel&&!$("nichoLivre").value.trim()?"on":""}" data-nicho="${esc(n)}">${esc(n)}</button>`).join("");
@@ -653,6 +802,8 @@ function render(){
   if(document.activeElement!==$("cPreco"))$("cPreco").value=cfg.preco||"";
   if(document.activeElement!==$("cMeta"))$("cMeta").value=meta;
   if(document.activeElement!==$("cKey"))$("cKey").value=cfg.tomtomKey||"";
+  if(document.activeElement!==$("cFone"))$("cFone").value=cfg.meuFone||"";
+  atualizarTxtAvisos();
   const ex={nome:"{nome}",cidade:"{cidade}",nicho:"{nicho}"};
   $("tplList").innerHTML=Object.entries(TPL).map(([k,t])=>`<div class="card"><h3>${esc(t.t)}</h3><div class="tpl">${esc(preencher(t.b,ex))}</div><div class="btns"><button class="btn" type="button" data-copytpl="${k}">${IC.copy} Copiar</button></div></div>`).join("")
     +`<p class="src">No funil e na busca, {nome}, {cidade} e {nicho} são trocados pelos dados da empresa.</p>`;
@@ -687,7 +838,12 @@ function cardLead(l){
       ${esgotou?`<button class="btn danger" type="button" data-move="${l.id}" data-to="perdido">Sem resposta</button>`:""}
       ${l.etapa==="respondeu"?`<button class="btn" type="button" data-move="${l.id}" data-to="proposta">Enviei proposta</button>`:""}
       ${l.etapa==="proposta"?`<button class="btn primary" type="button" data-move="${l.id}" data-to="fechado">${IC.check} Fechou!</button>`:""}
-      ${l.maps?`<a class="btn ghost" href="${esc(l.maps)}" target="_blank" rel="noopener">${IC.map}</a>`:""}
+      ${l.maps?`<a class="btn ghost" href="${esc(l.maps)}" target="_blank" rel="noopener" aria-label="Ver no Google">${IC.map}</a>`:""}
+    </div>
+    <div class="btns" style="margin-top:8px">
+      <a class="btn ghost" href="${esc(previaLink(l))}" target="_blank" rel="noopener">${IC.eye} Ver prévia</a>
+      ${["abordado","respondeu","proposta"].includes(l.etapa)&&waNum(l.fone)?`<a class="btn" href="${esc("https://wa.me/"+waNum(l.fone)+"?text="+encodeURIComponent(preencher(TPL.previa.b,l)))}" target="_blank" rel="noopener" data-previa="${l.id}">${IC.wa} Mandar prévia${l.previaEm?" ✓":""}</a>`:`<button class="btn ghost" type="button" data-copyprev="${l.id}">${IC.copy} Copiar link</button>`}
+      ${l.etapa==="abordado"&&l.followup?`<a class="btn ghost" href="${esc(calLink(l))}" target="_blank" rel="noopener">${IC.cal} Agenda</a>`:""}
     </div>
     ${!l.fone&&acao?`<div class="mt" style="margin-top:8px;font-size:13px;color:var(--muted)">Sem número. Copie a mensagem e mande pelo Instagram.</div>`:""}
     <details class="more"><summary>Editar</summary>
@@ -718,10 +874,13 @@ $("fSinais").innerHTML=SINAIS.map(s=>`<label class="check"><input type="checkbox
 try{const c=localStorage.getItem("captacao_cidade");if(c)$("cidade").value=c}catch(e){}
 
 document.addEventListener("click",e=>{
-  const t=e.target.closest("[data-go],[data-nicho],[data-stage],[data-abordar],[data-move],[data-copylead],[data-copytpl],[data-del],[data-addres],[data-wares],[data-addall],[data-mais],[data-fb]");
+  const t=e.target.closest("[data-go],[data-vista],[data-previa],[data-copyprev],[data-nicho],[data-stage],[data-abordar],[data-move],[data-copylead],[data-copytpl],[data-del],[data-addres],[data-wares],[data-addall],[data-mais],[data-fb]");
   if(!t)return;
   const d=t.dataset;
   if(d.go){irPara(d.go);return}
+  if(d.vista){vistaBusca=d.vista;renderBusca();return}
+  if(d.previa){const l=leads.find(x=>x.id===d.previa);if(l){const n={...l,previaEm:hoje()};if(n.etapa==="abordado"){n.followup=somaDias(2)}salvar(n)}return}
+  if(d.copyprev){const l=leads.find(x=>x.id===d.copyprev);if(l)copiar(previaLink(l)).then(()=>toast("Link da prévia copiado"));return}
   if(d.nicho){nichoSel=d.nicho;$("nichoLivre").value="";render();return}
   if(d.fb){filtroBusca=d.fb;renderBusca();return}
   if(d.mais){buscar(true);return}
@@ -763,6 +922,7 @@ $("formLead").addEventListener("submit",e=>{
   fecharSheet();toast(temp(l)==="hot"?"Lead quente salvo!":"Lead salvo");
 });
 $("btnExp").addEventListener("click",exportar);
+$("btnAvisos").addEventListener("click",ativarAvisos);
 $("fileImp").addEventListener("change",e=>{const f=e.target.files&&e.target.files[0];if(f)importar(f);e.target.value=""});
 let instPrompt=null;
 window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();instPrompt=e;$("btnInstall").hidden=false});
@@ -770,9 +930,10 @@ $("btnInstall").addEventListener("click",async()=>{if(!instPrompt)return;instPro
 window.addEventListener("appinstalled",()=>{toast("Captação instalado!");$("installTxt").textContent="App instalado neste celular."});
 if(window.matchMedia&&matchMedia("(display-mode: standalone)").matches){$("installTxt").textContent="Você está usando o app instalado."}
 if("serviceWorker" in navigator){window.addEventListener("load",()=>{navigator.serviceWorker.register("sw.js").catch(()=>{})})}
-$("btnCfg").addEventListener("click",()=>{cfg={...cfg,preco:$("cPreco").value.trim()||"249,90",meta:Math.max(1,parseInt($("cMeta").value)||20),tomtomKey:$("cKey").value.trim()};salvarCfg();toast("Ajustes salvos")});
+$("btnCfg").addEventListener("click",()=>{cfg={...cfg,preco:$("cPreco").value.trim()||"249,90",meta:Math.max(1,parseInt($("cMeta").value)||20),tomtomKey:$("cKey").value.trim(),meuFone:$("cFone").value.trim()};salvarCfg();toast("Ajustes salvos")});
 
 iniciarLocal();
+espelharParaSW();
 </script>
 </body>
 </html>
